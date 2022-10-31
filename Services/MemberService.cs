@@ -24,7 +24,7 @@ namespace DatingApp.API.Services
             {
                 Avatar = user.Avatar,
                 City = user.City,
-                CreateAt = user.CreateAt,
+                CreatedAt = user.CreatedAt,
                 DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
                 Gender = user.Gender,
@@ -40,7 +40,7 @@ namespace DatingApp.API.Services
             {
                 Avatar = user.Avatar,
                 City = user.City,
-                CreateAt = user.CreateAt,
+                CreatedAt = user.CreatedAt,
                 DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
                 Gender = user.Gender,

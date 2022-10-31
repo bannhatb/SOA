@@ -89,3 +89,7 @@
 /Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/Microsoft.IdentityModel.Abstractions.dll
 /Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/Data/Seed/users.json
+/Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/AutoMapper.dll
+/Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/MySqlConnector.dll
+/Users/vovanban/Documents/VS_code/C#/API/DatingApp.API/bin/Debug/net6.0/Pomelo.EntityFrameworkCore.MySql.dll

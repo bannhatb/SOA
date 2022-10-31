@@ -5,6 +5,7 @@ using DatingApp.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using DatingApp.API.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -26,8 +27,17 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 //asb-add-dbContext
-services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(connectionString));
+// services.AddDbContext<DataContext>(options =>
+//     options.UseSqlServer(connectionString));
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
+services.AddDbContext<DataContext>(
+    dbContextOptions => dbContextOptions
+        .UseMySql(connectionString, serverVersion)
+        .LogTo(Console.WriteLine, LogLevel.Information)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors()
+);
+
 
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,6 +56,9 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IMemberService, MemberService>();
+
+//add AutoMapper
+services.AddAutoMapper(typeof(UserMapperProfile).Assembly);
 
 
 var app = builder.Build();

@@ -20,13 +20,13 @@ namespace DatingApp.API.Controllers
             _memberService = memberService;
         }
 
-        [HttpGet]
+        [HttpGet("get-list-member")]
         public ActionResult<List<MemberDto>> Get()
         {
             return Ok(_memberService.GetMembers());
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("get-user-by/{username}")]
         public ActionResult<MemberDto> Get(string username)
         {
             return Ok(_memberService.GetMemberByUsername(username));

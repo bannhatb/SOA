@@ -26,7 +26,7 @@ namespace DatingApp.API.Data.Seed
                 using var hmac = new HMACSHA512();
                 user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123456"));
                 user.PasswordSalt = hmac.Key;
-                user.CreateAt = DateTime.Now;
+                user.CreatedAt = DateTime.Now;
                 _dataContext.Users.Add(user);
             }
             _dataContext.SaveChanges();
