@@ -17,8 +17,11 @@ namespace DatingApp.API.Profiles
                 .ForMember(
                     dest => dest.Age,
                     options => options
-                        .MapFrom(src => (src.DateOfBirth != null ? DateTime.Now.Year - src.DateOfBirth.Value.Year : 0))
+                        .MapFrom(src => src.DateOfBirth)
                 );
+
+
+            CreateMap<RegisterUserDto, User>();
 
         }
     }

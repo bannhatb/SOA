@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using DatingApp.API.Profiles;
+using DatingApp.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -56,6 +57,9 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  
 services.AddScoped<ITokenService, TokenService>();
 services.AddScoped<IMemberService, MemberService>();
+services.AddScoped<IAuthService, AuthService>();
+services.AddScoped<IUserRepository, UserRepository>();
+
 
 //add AutoMapper
 services.AddAutoMapper(typeof(UserMapperProfile).Assembly);

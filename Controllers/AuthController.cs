@@ -13,86 +13,43 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.API.Controllersace
 {
+    [Route("api/auth")]
+    [ApiController]
     
-    public class AuthController : BaseController
+    public class AuthController : ControllerBase
     {
-        private readonly DataContext _datacContext;
-        private readonly ITokenService _tokenService;
-
-        public AuthController(DataContext dataContext, ITokenService tokenService)
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            _datacContext = dataContext;
-            _tokenService = tokenService;
+            _authService = authService;
         }
-        
-        
-
+ 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] AuthUserDto authUserDto)
+        public IActionResult Register([FromBody] RegisterUserDto registerUserDto)
         {
-            authUserDto.Username = authUserDto.Username.ToLower();
-            if (_datacContext.Users.Any(u => u.Username == authUserDto.Username))
+            try
             {
-                return BadRequest("Username is already existed!");
+                return Ok(_authService.Register(registerUserDto));
             }
- 
-            using var hmac = new HMACSHA512();
-            var passwordBytes = Encoding.UTF8.GetBytes(authUserDto.Password);
-            var user = new User {
-                Username = authUserDto.Username,
-                PasswordSalt = hmac.Key,
-                PasswordHash = hmac.ComputeHash(passwordBytes)
-            };
- 
-            _datacContext.Users.Add(user);
-            _datacContext.SaveChanges();
-            var token = _tokenService.CreateToken(user.Username);
-            return Ok( new AuthUserToken() {
-                Username = user.Username,
-                Token = _tokenService.CreateToken(user.Username)
-            });
-            
+            catch (BadHttpRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
-        [AllowAnonymous]
+ 
         [HttpPost("login")]
         public IActionResult Login([FromBody] AuthUserDto authUserDto)
         {
-            authUserDto.Username = authUserDto.Username.ToLower();
-
-            var currentUser = _datacContext.Users.FirstOrDefault(x => x.Username == authUserDto.Username);
-
-            if(currentUser == null)
+            try
             {
-                return Unauthorized("Username is invalid.");
+                return Ok(_authService.Login(authUserDto));
             }
-
-            using var hmac = new HMACSHA512(currentUser.PasswordSalt);
-            var passwordBytes = hmac.ComputeHash(
-                Encoding.UTF8.GetBytes(authUserDto.Password)
-            );
-
-            for(int i = 0; i < currentUser.PasswordHash.Length; i++)
+            catch (UnauthorizedAccessException ex)
             {
-                if(currentUser.PasswordHash[i] != passwordBytes[i])
-                {
-                    return Unauthorized("Password is valid.");
-                }
+                return Unauthorized(ex.Message);
             }
-            
-            var token = _tokenService.CreateToken(currentUser.Username);
-            return Ok( new AuthUserToken() {
-                Username = currentUser.Username,
-                Token = _tokenService.CreateToken(currentUser.Username)
-            });
         }
 
-        // [Authorize]
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(_datacContext.Users.ToList());
-        }
 
     }
 }
